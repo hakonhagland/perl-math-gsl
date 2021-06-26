@@ -1,0 +1,76 @@
+name: linux-build-dist
+on: [push, pull_request]
+jobs:
+  build-dist:
+    runs-on: ubuntu-20.04
+    env:
+      GSL_VERSION: 2.7
+      USE_PERL: perl-5.34.0.tar.gz
+      #USE_PERL: system
+    steps:
+      - uses: actions/checkout@v2
+      - name: set environment variables
+        run: ./.github/scripts/set_environment_variables.sh
+      - name: install packages
+        run: |
+          # NOTE: The following packages are already installed in "ubuntu-20.04" :
+          #     build-essential curl g++ git wget libssl-dev libz-dev
+          #       swig autoconf libtool
+          #sudo apt-get install swig autoconf libtool
+          swig -version
+      - name: install perl
+        run: |
+          ./.github/scripts/install_perl.sh
+      - name: install gsl
+        run: |
+          ./.github/scripts/install_gsl.sh
+      - name: install perl modules, build, and test
+        run: |
+          ./.github/scripts/build_and_test.sh
+      - name: build dist
+        run: |
+          ./.github/scripts/build_dist.sh
+      - name: Save dist as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: math_gsl_dist
+          path: ${{ env.MATH_GSL_DISTNAME }}
+      - name: Save name of dist as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: math_gsl_dist_name
+          path: math-gsl-dist-name.txt
+  install-dist-linux:
+    runs-on: ubuntu-20.04
+    needs: build-dist
+    env:
+      GSL_VERSION: 2.6
+      USE_PERL: perl-5.34.0.tar.gz
+      #USE_PERL: system
+    steps:
+      - uses: actions/checkout@v2
+      - name: Download dist
+        uses: actions/download-artifact@v2
+        with:
+          name: math_gsl_dist
+      - name: Download dist name
+        uses: actions/download-artifact@v2
+        with:
+          name: math_gsl_dist_name
+      - name: set environment variables
+        run: ./.github/scripts/set_environment_variables.sh
+      - name: install perl
+        run: ./.github/scripts/install_perl.sh
+      - name: install gsl
+        run: ./.github/scripts/install_gsl.sh
+      - name: extract dist
+        run: |
+          DISTNAME=$(<math-gsl-dist-name.txt)
+          tar zxvf $DISTNAME
+          DISTDIR=$(perl -pe 's/\.tar.gz$//' <<<"$DISTNAME")
+          echo "DISTDIR=$DISTDIR" >> $GITHUB_ENV
+      - name: install perl modules and build and test
+        run: |
+          BASEDIR=$PWD
+          cd $DISTDIR
+          $BASEDIR/.github/scripts/build_and_test.sh
