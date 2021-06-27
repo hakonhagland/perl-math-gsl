@@ -44,7 +44,7 @@ jobs:
     runs-on: ubuntu-20.04
     needs: build-dist
     env:
-      GSL_VERSION: 2.6
+      GSL_VERSION: 2.7
       USE_PERL: perl-5.34.0.tar.gz
       #USE_PERL: system
     steps:
