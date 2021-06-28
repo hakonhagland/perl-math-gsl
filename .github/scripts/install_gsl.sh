@@ -1,13 +1,16 @@
 #! /bin/bash
 
 GSL_MIRROR=http://mirrors.kernel.org/gnu/gsl
-TARBALL="$TARBALL_GSL".tar.gz
-
-mkdir -p "$GSL_SRC_DIR"
-cd "$GSL_SRC_DIR"
-wget "$GSL_MIRROR"/"$TARBALL" --retry-connrefused --timeout=900
-tar zxvf "$TARBALL"
-cd "$TARBALL_GSL"
-./configure --prefix "$GSL_INST_DIR"/"$TARBALL_GSL"
+BUILD_DIR=$GSL_DIR/build
+INSTALL_DIR=$GSL_DIR
+mkdir -p $BUILD_DIR
+cd "$BUILD_DIR"
+export PATH=$PERL_DIR/bin:$PATH
+ZIP_NAME="$GSL_NAME".tar.gz
+wget "$GSL_MIRROR"/"$ZIP_NAME" --retry-connrefused --timeout=900
+tar zxvf "$ZIP_NAME"
+cd "$GSL_NAME"
+./configure --prefix "$INSTALL_DIR"
 make -j$(nproc)
 make install
+echo "PATH=$PATH" >> $GITHUB_ENV
