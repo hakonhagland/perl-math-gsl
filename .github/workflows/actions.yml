@@ -22,6 +22,7 @@ jobs:
         run: |
           ./.github/scripts/install_perl.sh
   build-gsl:
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         gsl: [2.7, 2.6]
