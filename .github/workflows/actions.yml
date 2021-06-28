@@ -10,13 +10,13 @@ jobs:
       - uses: actions/checkout@v2
       - name: set environment variables
         env:
-          PERL_NAME: perl-5.${{ matrix.perl }}
+          PERL_NAME: perl-5.${{ matrix.perl }}.0
           PERL_DIR: ~/perl/${{ runner.os }}/5.${{ matrix.perl }}
         run: |
           ./.github/scripts/set_environment_variables.sh
       - name: perl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
+          CACHE_KEY: ${{ runner.os }}-perl3-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v2
         with:
@@ -41,7 +41,7 @@ jobs:
           ./.github/scripts/set_environment_variables.sh
       - name: gsl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-gsl2-${{ matrix.gsl }}
+          CACHE_KEY: ${{ runner.os }}-gsl3-${{ matrix.gsl }}
         id: cache-gsl
         uses: actions/cache@v2
         with:
@@ -64,7 +64,7 @@ jobs:
         env:
           GSL_NAME: gsl-${{ matrix.gsl }}
           GSL_DIR: ~/gsl/${{ runner.os }}/gsl-${{ matrix.gsl }}
-          PERL_NAME: perl-5.${{ matrix.perl }}
+          PERL_NAME: perl-5.${{ matrix.perl }}.0
           PERL_DIR: ~/perl/${{ runner.os }}/5.${{ matrix.perl }}
         run: |
           ./.github/scripts/set_environment_variables.sh
@@ -105,7 +105,7 @@ jobs:
         env:
           GSL_NAME: gsl-${{ matrix.gsl }}
           GSL_DIR: ~/gsl/${{ runner.os }}/gsl-${{ matrix.gsl }}
-          PERL_NAME: perl-5.${{ matrix.perl }}
+          PERL_NAME: perl-5.${{ matrix.perl }}.0
           PERL_DIR: ~/perl/${{ runner.os }}/5.${{ matrix.perl }}
         run: |
           ./.github/scripts/set_environment_variables.sh
