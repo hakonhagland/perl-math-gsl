@@ -8,10 +8,14 @@ jobs:
         perl: [32, 34]
     steps:
       - uses: actions/checkout@v2
-      - name: perl cache
+      - name: set environment variables
         env:
           PERL_NAME: perl-5.${{ matrix.perl }}
           PERL_DIR: ~/perl/${{ runner.os }}/5.${{ matrix.perl }}
+        run: |
+          ./.github/scripts/set_environment_variables.sh
+      - name: perl cache
+        env:
           CACHE_KEY: ${{ runner.os }}-perl-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v2
@@ -29,11 +33,14 @@ jobs:
         gsl: [2.7, 2.6]
     steps:
       - uses: actions/checkout@v2
-      - name: gsl cache
+      - name: set environment variables
         env:
           GSL_NAME: gsl-${{ matrix.gsl }}
           GSL_DIR: ~/gsl/${{ runner.os }}/gsl-${{ matrix.gsl }}
-          PERL_DIR: ~/perl/${{ runner.os }}/5.34
+        run: |
+          ./.github/scripts/set_environment_variables.sh
+      - name: gsl cache
+        env:
           CACHE_KEY: ${{ runner.os }}-gsl-${{ matrix.gsl }}
         id: cache-gsl
         uses: actions/cache@v2
@@ -53,13 +60,16 @@ jobs:
         perl: [34]
     steps:
       - uses: actions/checkout@v2
+      - name: set environment variables
+        env:
+          GSL_NAME: gsl-${{ matrix.gsl }}
+          GSL_DIR: ~/gsl/${{ runner.os }}/gsl-${{ matrix.gsl }}
+          PERL_NAME: perl-5.${{ matrix.perl }}
+          PERL_DIR: ~/perl/${{ runner.os }}/5.${{ matrix.perl }}
+        run: |
+          ./.github/scripts/set_environment_variables.sh
 
       - name: install packages
-        env:
-          PERL_NAME: perl-5.${{ matrix.perl }}
-          PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
-          GSL_NAME: gsl-${{ matrix.gsl }}
-          GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
         run: |
           # NOTE: The following packages are already installed in "ubuntu-20.04" :
           #     build-essential curl g++ git wget libssl-dev libz-dev
@@ -91,6 +101,14 @@ jobs:
         perl: [34, 32]
     steps:
       - uses: actions/checkout@v2
+      - name: set environment variables
+        env:
+          GSL_NAME: gsl-${{ matrix.gsl }}
+          GSL_DIR: ~/gsl/${{ runner.os }}/gsl-${{ matrix.gsl }}
+          PERL_NAME: perl-5.${{ matrix.perl }}
+          PERL_DIR: ~/perl/${{ runner.os }}/5.${{ matrix.perl }}
+        run: |
+          ./.github/scripts/set_environment_variables.sh
       - name: Download dist
         env:
           PERL_NAME: perl-5.${{ matrix.perl }}

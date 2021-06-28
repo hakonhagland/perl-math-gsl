@@ -1,9 +1,5 @@
 #! /bin/bash
 
-export LD_LIBRARY_PATH=${GSL_DIR}/lib
-export PATH=$GSL_DIR/bin:"$PATH"
-export PATH=$PERL_DIR/bin:"$PATH"
-export PKG_CONFIG_PATH="$GSL_DIR"/lib/pkgconfig
 cpanm -vn Net::SSLeay
 cpanm -n Alien::Build
 if [[ $GITHUB_WORKFLOW == *"windows"* ]] ; then
@@ -28,4 +24,3 @@ perl Build.PL
 ./Build installdeps --cpan_client cpanm
 ./Build
 ./Build test
-echo "PATH=$PATH" >> $GITHUB_ENV
