@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        perl: [32, 34]
+        perl: [34, 32, 30, 28, 26]
     steps:
       - uses: actions/checkout@v2
       - name: set environment variables
@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        gsl: [2.7, 2.6]
+        gsl: [2.7, 2.6, 2.5, 2.4, 2.3]
     steps:
       - uses: actions/checkout@v2
       - name: set environment variables
@@ -113,8 +113,8 @@ jobs:
     needs: [build-dist]
     strategy:
       matrix:
-        gsl: [2.7, 2.6]
-        perl: [34, 32]
+        gsl: [2.7, 2.6, 2.5, 2.4, 2.3]
+        perl: [34, 32, 30, 28, 26]
     steps:
       - uses: actions/checkout@v2
       - name: set environment variables
