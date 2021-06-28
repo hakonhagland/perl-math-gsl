@@ -1,16 +1,61 @@
 name: linux-build-dist
 on: [push, pull_request]
 jobs:
+  build-perls:
+    runs-on: ubuntu-20.04
+    strategy:
+      matrix:
+        perl: [32, 34]
+    env:
+      PERL_NAME: perl-5.${{ matrix.perl }}
+      PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
+      CACHE_KEY: ${{ runner.os }}-perl-${{ matrix.perl }}
+    steps:
+      - name: perl cache
+        id: cache-perl
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.PERL_DIR }}
+          key: ${{ env.CACHE_KEY }}
+      - name: install perl
+        if: steps.cache-perl.outputs.cache-hit != 'true'
+        run: |
+          ./.github/scripts/install_perl.sh
+  build-gsl:
+    strategy:
+      matrix:
+        gsl: [2.7, 2.6]
+    env:
+      GSL_NAME: gsl-${{ matrix.gsl }}
+      GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
+      PERL_DIR: ~/perl/${{runner.os}}/5.34
+      CACHE_KEY: ${{ runner.os }}-gsl-${{ matrix.gsl }}
+    steps:
+      - name: gsl cache
+        id: cache-gsl
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.GSL_DIR }}
+          key: ${{ env.CACHE_KEY }}
+      - name: install gsl
+        if: steps.cache-gsl.outputs.cache-hit != 'true'
+        run: |
+          ./.github/scripts/install_gsl.sh
   build-dist:
     runs-on: ubuntu-20.04
+    needs: build-gsl
+    strategy:
+      matrix:
+        gsl: [2.7]
+        perl: [34]
     env:
-      GSL_VERSION: 2.7
-      USE_PERL: perl-5.34.0.tar.gz
-      #USE_PERL: system
+      PERL_NAME: perl-5.${{ matrix.perl }}
+      PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
+      GSL_NAME: gsl-${{ matrix.gsl }}
+      GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
     steps:
       - uses: actions/checkout@v2
-      - name: set environment variables
-        run: ./.github/scripts/set_environment_variables.sh
+
       - name: install packages
         run: |
           # NOTE: The following packages are already installed in "ubuntu-20.04" :
@@ -18,12 +63,6 @@ jobs:
           #       swig autoconf libtool
           #sudo apt-get install swig autoconf libtool
           swig -version
-      - name: install perl
-        run: |
-          ./.github/scripts/install_perl.sh
-      - name: install gsl
-        run: |
-          ./.github/scripts/install_gsl.sh
       - name: install perl modules, build, and test
         run: |
           ./.github/scripts/build_and_test.sh
@@ -43,10 +82,15 @@ jobs:
   install-dist-linux:
     runs-on: ubuntu-20.04
     needs: build-dist
+    strategy:
+      matrix:
+        gsl: [2.7, 2.6]
+        perl: [34, 32]
     env:
-      GSL_VERSION: 2.7
-      USE_PERL: perl-5.34.0.tar.gz
-      #USE_PERL: system
+      PERL_NAME: perl-5.${{ matrix.perl }}
+      PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
+      GSL_NAME: gsl-${{ matrix.gsl }}
+      GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
     steps:
       - uses: actions/checkout@v2
       - name: Download dist
@@ -57,12 +101,6 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: math_gsl_dist_name
-      - name: set environment variables
-        run: ./.github/scripts/set_environment_variables.sh
-      - name: install perl
-        run: ./.github/scripts/install_perl.sh
-      - name: install gsl
-        run: ./.github/scripts/install_gsl.sh
       - name: extract dist
         run: |
           DISTNAME=$(<math-gsl-dist-name.txt)
