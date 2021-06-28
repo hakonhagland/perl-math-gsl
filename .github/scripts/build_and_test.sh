@@ -1,7 +1,12 @@
 #! /bin/bash
 
 echo "PATH=$PATH"
+echo "HOME=$HOME"
+ls -l $HOME
+echo -----------------
 ls -l $PERL_DIR/bin
+echo ------------------
+
 cpanm -vn Net::SSLeay
 cpanm -n Alien::Build
 if [[ $GITHUB_WORKFLOW == *"windows"* ]] ; then
