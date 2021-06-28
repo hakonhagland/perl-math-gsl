@@ -8,7 +8,7 @@ jobs:
         perl: [32, 34]
     env:
       PERL_NAME: perl-5.${{ matrix.perl }}
-      PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
+      PERL_DIR: ~/perl/${{ runner.os }}/5.${{ matrix.perl }}
       CACHE_KEY: ${{ runner.os }}-perl-${{ matrix.perl }}
     steps:
       - name: perl cache
@@ -27,8 +27,8 @@ jobs:
         gsl: [2.7, 2.6]
     env:
       GSL_NAME: gsl-${{ matrix.gsl }}
-      GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
-      PERL_DIR: ~/perl/${{runner.os}}/5.34
+      GSL_DIR: ~/gsl/${{ runner.os }}/gsl-${{ matrix.gsl }}
+      PERL_DIR: ~/perl/${{ runner.os }}/5.34
       CACHE_KEY: ${{ runner.os }}-gsl-${{ matrix.gsl }}
     steps:
       - name: gsl cache
@@ -43,7 +43,7 @@ jobs:
           ./.github/scripts/install_gsl.sh
   build-dist:
     runs-on: ubuntu-20.04
-    needs: build-gsl
+    needs: [build-gsl, build-perls]
     strategy:
       matrix:
         gsl: [2.7]
