@@ -1,5 +1,7 @@
 #! /bin/bash
 
+echo "PATH=$PATH"
+ls -l $PERL_DIR/bin
 cpanm -vn Net::SSLeay
 cpanm -n Alien::Build
 if [[ $GITHUB_WORKFLOW == *"windows"* ]] ; then
