@@ -41,7 +41,7 @@ jobs:
           ./.github/scripts/set_environment_variables.sh
       - name: gsl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-gsl3-${{ matrix.gsl }}
+          CACHE_KEY: ${{ runner.os }}-gsl4-${{ matrix.gsl }}
         id: cache-gsl
         uses: actions/cache@v2
         with:
