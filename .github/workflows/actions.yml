@@ -94,7 +94,7 @@ jobs:
           path: math-gsl-dist-name.txt
   install-dist-linux:
     runs-on: ubuntu-20.04
-    needs: build-dist
+    needs: [build-dist, build-gsl, build-perls]
     strategy:
       matrix:
         gsl: [2.7, 2.6]
