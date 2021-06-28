@@ -7,6 +7,7 @@ jobs:
       matrix:
         perl: [32, 34]
     steps:
+      - uses: actions/checkout@v2
       - name: perl cache
         env:
           PERL_NAME: perl-5.${{ matrix.perl }}
@@ -27,6 +28,7 @@ jobs:
       matrix:
         gsl: [2.7, 2.6]
     steps:
+      - uses: actions/checkout@v2
       - name: gsl cache
         env:
           GSL_NAME: gsl-${{ matrix.gsl }}
