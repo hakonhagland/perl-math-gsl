@@ -49,15 +49,15 @@ jobs:
       matrix:
         gsl: [2.7]
         perl: [34]
-    env:
-      PERL_NAME: perl-5.${{ matrix.perl }}
-      PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
-      GSL_NAME: gsl-${{ matrix.gsl }}
-      GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
     steps:
       - uses: actions/checkout@v2
 
       - name: install packages
+        env:
+          PERL_NAME: perl-5.${{ matrix.perl }}
+          PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
+          GSL_NAME: gsl-${{ matrix.gsl }}
+          GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
         run: |
           # NOTE: The following packages are already installed in "ubuntu-20.04" :
           #     build-essential curl g++ git wget libssl-dev libz-dev
@@ -87,14 +87,14 @@ jobs:
       matrix:
         gsl: [2.7, 2.6]
         perl: [34, 32]
-    env:
-      PERL_NAME: perl-5.${{ matrix.perl }}
-      PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
-      GSL_NAME: gsl-${{ matrix.gsl }}
-      GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
     steps:
       - uses: actions/checkout@v2
       - name: Download dist
+        env:
+          PERL_NAME: perl-5.${{ matrix.perl }}
+          PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
+          GSL_NAME: gsl-${{ matrix.gsl }}
+          GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
         uses: actions/download-artifact@v2
         with:
           name: math_gsl_dist
