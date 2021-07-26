@@ -24,10 +24,13 @@ Update the `Changes` file.
 
 ## Build the CPAN distribution
 
+Commit the changes above to the master branch, and push them to the remote (origin). Next, to build
+a tarball:
+
 ```
 cd developer/docker
 ./build_image.sh
-./run.sh 2.6  # <-- Uses GSL version 2.6 to build the distribution
+./run.sh 2.7  # <-- Uses GSL version 2.7 to build the distribution
 ```
 after `run.sh` there should be a distribution tarball
 `Math-GSL-xx.yy.tar.gz`, in the current directory. Here, xx.yy
