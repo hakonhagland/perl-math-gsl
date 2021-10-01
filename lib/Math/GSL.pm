@@ -63,7 +63,7 @@ Each GSL subsystem has its own module. For example, the random number generator
 subsystem is Math::GSL::RNG. Many subsystems have a more Perlish and
 object-oriented frontend which can be used, as the above example shows. The raw
 GSL object is useful for using the low-level GSL functions, which in the case of
-the Matrix subsytem, would be of the form gsl_matrix_* . Each module has further
+the Matrix subsystem, would be of the form gsl_matrix_* . Each module has further
 documentation about the low-level C functions as well as using the more
 intuitive (but slightly slower) object-oriented interface.
 
@@ -208,7 +208,7 @@ common problem that happens on RedHat Linux (RHEL) and CentOS looks like this:
     cannot restore segment prot after reloc: Permission denied at /usr/lib/perl5/5.10.0/i386-linux-thread-multi/DynaLoader.pm line 203.
     #  at blib/lib/Math/GSL/Errno.pm line 10
 
-This is due the the SE Linux setting being set to "enforcing". To Temporarily
+This is due to the SE Linux setting being set to "enforcing". To Temporarily
 disable enforcement on a running system:
 
     /usr/sbin/setenforce 0
