@@ -5,11 +5,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        perl: [34, 32, 30, 28, 26]
+        perl: [38, 36, 34, 32, 30]
         os: [ubuntu-latest, macos-latest]
 #        include:
 #          - os: macos-latest
-#          - perl: 34
+#          - perl: 38
     steps:
       - uses: actions/checkout@v2
       - name: set environment variables
@@ -121,7 +121,7 @@ jobs:
     strategy:
       matrix:
         gsl: [2.7, 2.6, 2.5, 2.4, 2.3]
-        perl: [34, 32, 30, 28, 26]
+        perl: [38, 36, 34, 32, 30]
     steps:
       - uses: actions/checkout@v2
       - name: set environment variables
@@ -177,7 +177,7 @@ jobs:
     needs: [build-dist]
     strategy:
       matrix:
-        perl: [34, 32]
+        perl: [38, 36]
     steps:
       - uses: actions/checkout@v2
       - name: set environment variables
