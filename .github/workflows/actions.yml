@@ -1,5 +1,5 @@
 name: linux-build-dist
-on: [push, pull_request]
+on: [pull_request]
 jobs:
   build-perls:
     runs-on: ${{ matrix.os }}
@@ -11,7 +11,7 @@ jobs:
 #          - os: macos-latest
 #          - perl: 38
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: set environment variables
         env:
           PERL_NAME: perl-5.${{ matrix.perl }}.0
@@ -66,7 +66,7 @@ jobs:
         perl: [34]
         os: [ubuntu-latest]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: set environment variables
         env:
           GSL_NAME: gsl-${{ matrix.gsl }}
@@ -123,7 +123,7 @@ jobs:
         gsl: [2.7, 2.6, 2.5, 2.4, 2.3]
         perl: [38, 36, 34, 32, 30]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: set environment variables
         env:
           GSL_NAME: gsl-${{ matrix.gsl }}
@@ -179,7 +179,7 @@ jobs:
       matrix:
         perl: [38, 36]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: set environment variables
         env:
           PERL_NAME: perl-5.${{ matrix.perl }}.0
