@@ -19,6 +19,7 @@
 #    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 use strict;
 use warnings;
+use feature qw(say);
 use Config;
 use Data::Dumper;
 use Module::Build;
@@ -305,10 +306,19 @@ sub check_gsl_version_pkgconfig {
     };
 }
 
+sub debug_print_path {
+    my $path = $ENV{PATH};
+    my @paths = split /:/, $path;
+    say join "\n", @paths;
+    my $first = $paths[0];
+    say "ls $first";
+    system 'ls', '-l', $first;
+}
+
 sub check_gsl_version {
 
     print "Checking for GSL using gsl-config\n";
-
+    debug_print_path();
     my $gsl_version = qx{gsl-config --version};
     if (not defined $gsl_version) {
         print "
