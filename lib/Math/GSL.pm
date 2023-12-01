@@ -263,7 +263,7 @@ This Perl module is dedicated in memory of Nick Ing-Simmons.
 
 =head1 COPYRIGHT & LICENSE
 
-Copyright (C) 2008-2021 Jonathan "Duke" Leto, Thierry Moisan all rights reserved.
+Copyright (C) 2008-2023 Jonathan "Duke" Leto, Thierry Moisan all rights reserved.
 
 This program is free software; you can redistribute it and/or modify it
 under the same terms as Perl itself.
