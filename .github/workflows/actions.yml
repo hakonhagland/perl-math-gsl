@@ -26,7 +26,7 @@ jobs:
           ./.github/scripts/set_environment_variables.sh
       - name: perl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-perl1-${{ matrix.perl }}
+          CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v3
         with:
@@ -83,7 +83,7 @@ jobs:
 
       - name: perl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-perl1-${{ matrix.perl }}
+          CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v3
         with:
@@ -139,7 +139,7 @@ jobs:
           ./.github/scripts/set_environment_variables.sh
       - name: perl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-perl1-${{ matrix.perl }}
+          CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v3
         with:
@@ -182,7 +182,7 @@ jobs:
     needs: [build-dist]
     strategy:
       matrix:
-        perl: [34, 32]
+        perl: [38, 36]
     steps:
       - uses: actions/checkout@v4
       - name: set environment variables
@@ -193,7 +193,7 @@ jobs:
           ./.github/scripts/set_environment_variables.sh
       - name: perl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-perl1-${{ matrix.perl }}
+          CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v3
         with:
