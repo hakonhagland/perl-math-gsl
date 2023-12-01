@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        perl: [38, 36, 34, 32, 30, 28, 26]
+        perl: [38, 36, 34, 32]
         os: [ubuntu-latest, macos-latest]
 #        include:
 #          - os: macos-latest
@@ -26,7 +26,7 @@ jobs:
           ./.github/scripts/set_environment_variables.sh
       - name: perl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-perl3-${{ matrix.perl }}
+          CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v3
         with:
@@ -68,7 +68,7 @@ jobs:
     strategy:
       matrix:
         gsl: [2.7]
-        perl: [34]
+        perl: [38]
         os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
@@ -83,7 +83,7 @@ jobs:
 
       - name: perl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-perl3-${{ matrix.perl }}
+          CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v3
         with:
@@ -99,7 +99,7 @@ jobs:
           key: ${{ env.CACHE_KEY }}
       - name: install packages
         run: |
-          # NOTE: The following packages are already installed in "ubuntu-20.04" :
+          # NOTE: The following packages are already installed in "ubuntu-latest" :
           #     build-essential curl g++ git wget libssl-dev libz-dev
           #       swig autoconf libtool
           #sudo apt-get install swig autoconf libtool
@@ -121,12 +121,12 @@ jobs:
           name: math_gsl_dist_name
           path: math-gsl-dist-name.txt
   install-dist-linux:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     needs: [build-dist]
     strategy:
       matrix:
         gsl: [2.7, 2.6, 2.5, 2.4, 2.3]
-        perl: [38, 36, 34, 32, 30, 28, 26]
+        perl: [38, 36, 34, 32]
     steps:
       - uses: actions/checkout@v4
       - name: set environment variables
@@ -139,7 +139,7 @@ jobs:
           ./.github/scripts/set_environment_variables.sh
       - name: perl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-perl3-${{ matrix.perl }}
+          CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v3
         with:
@@ -182,7 +182,7 @@ jobs:
     needs: [build-dist]
     strategy:
       matrix:
-        perl: [34, 32]
+        perl: [38, 36]
     steps:
       - uses: actions/checkout@v4
       - name: set environment variables
@@ -193,7 +193,7 @@ jobs:
           ./.github/scripts/set_environment_variables.sh
       - name: perl cache
         env:
-          CACHE_KEY: ${{ runner.os }}-perl3-${{ matrix.perl }}
+          CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
         uses: actions/cache@v3
         with:
