@@ -1,3 +1,3 @@
 #! /bin/bash
 
-docker build -t math-gsl-ubuntu-2004 .
+docker build -t math-gsl-ubuntu-2204 .

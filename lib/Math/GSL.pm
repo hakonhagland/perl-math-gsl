@@ -34,7 +34,7 @@ Math::GSL - Perl interface to the GNU Scientific Library (GSL)
 
 =head1 VERSION
 
-Version 0.43
+Version 0.44
 
 =head1 SYNOPSIS
 

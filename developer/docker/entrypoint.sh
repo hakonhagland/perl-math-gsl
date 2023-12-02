@@ -33,12 +33,6 @@ export PKG_CONFIG_PATH="$GSL_INST_DIR"/"$TARBALL_GSL"/lib/pkgconfig
 
 git clone https://github.com/hakonhagland/perl-math-gsl.git
 cd perl-math-gsl
-# NOTE: On Ubuntu 20.04 there is some test failures when installing Net::SSLeay
-#       See: https://rt.cpan.org/Ticket/Display.html?id=132425
-#       There is already a patch ready, so I guess the problem with be fixed
-#       in Ubuntu 20.10. For now, we just install Net::SSLeay without running the
-#       tests.
-cpanm -n Net::SSLeay
 cpanm -v Alien::GSL
 cpanm Module::Build
 perl Build.PL
@@ -50,4 +44,4 @@ mkdir -p /tmp/dist
 mv *.tar.gz /tmp/dist
 
 # Uncomment the following line if you do not want to immediately remove the container..
-# exec bash
+exec bash
