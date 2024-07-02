@@ -70,22 +70,17 @@ to run `Perl Build.pl; Build` to determine the file names. You can
 simply look at the files currently in the `MANIFEST` file and deduce
 what the new names will be.
 
-### Update .tavis.yml
+### Update actions.yml
 
-- First, update the GSL_CURRENT item in `global:` under the `env:`
-  list to reflect the new version of GSL.
-
-- Add the previous (i.e., the current before we did this upgrade) to the
-  head of the `matrix:` list under the `env:` list.
+- First, add the new version of GSL to the `gsl` matrix array in the `build-gsl` job.
 - Consider removing unsupported GSL versions from the end of the list.
 - Consider adding new versions of `perl` to the front of the `perl:` list.
 - Consider deleting deprecated versions of `perl` from the end of the `perl:` list.
 
 
-
 ### Update Ver2Func.pm
 
-This is the main part of the upgrading work, and it can be time consuming
+This is the main part of the upgrading work, and it can be time-consuming
 depending on the number of new features that has been added. 
 
 First, add a new hash entry to the end of the `@ver2func` array.
@@ -94,7 +89,7 @@ previous version should be added in the `new` item of the hash.
 How to determine which items are new? [TODO: find a simpler way to do
 this?] The brute force approach is
 to run the test suite repeatedly looking at the failed tests will
-given an indication of the names of the new functions. 
+give an indication of the names of the new functions. 
 
 When all the tests passes, we can be confident that we have added
 most of the new functions. 
