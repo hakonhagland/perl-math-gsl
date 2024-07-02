@@ -1,25 +1,21 @@
 # Upgrading to support a new version of GSL
 
-## The travis build script
+## The GitHub action workflow
 
-When upgrading to a new version, the travis CI builds will tell us
-when something is not right. Currently we are building and testing
-for 58 different setups (combinations of GSL version and perl version).
+When upgrading to a new version, the GitHub action workflow will tell us
+when something is not right. Currently, we are building and testing
+for 22 different setups (combinations of GSL version and perl version).
 
 ### Stage 1
 For each setup, the build script first builds a CPAN distribution 
 `Math-GSL-yy.xx.tar.gz` where `yy.xx` is the current version of the
 the swig module, i.e. the same as `$MATH::GSL::VERSION`.
 
-First the GSL version given by the GSL_CURRENT environment variable, see
-`.travis.yml`, is downloaded and installed.
-
-Then, `perl Build.PL` is run. It uses `gsl-config` to determine the
-installed version of GSL on the system. Here you can change the `PATH`
-environment variable before calling `perl Build.PL` in order for 
-it to use another version of `GSL` if you have multiple versions
-installed. In our case it determines that the GSL version given by
-GSL_CURRENT is installed.
+First, a given GSL version is downloaded and installed.
+Then, `perl Build.PL` is run. It uses `Alien::GSL` module to determine the
+installed version of GSL on the system. The module makes use of the `PATH`, `LD_LIBRARY_PATH`,
+and `PKG_CONFIG_PATH` environment variables to determine if it can use an installed version
+of GSL. If not, it will download the latest version from the internet.
 
 Then, `Build.PL` extracts the GSL version by running `gsl-config` and
 writes this information to `swig/system.i`. Finally, it generates a script
@@ -35,7 +31,7 @@ current subsystem information found in `@ver2func` for the current version.
 The output of each `swig` call is a `.pm` file which is put in the `pm/`
 directory, and a `.c` file which is put in the `xs/` directory.
 
-After `Build` is finished, travis calls `Build dist` to generate a
+After `Build` is finished, the GitHub action workflow calls `Build dist` to generate a
 CPAN distribution archive file. This will include all the files listed
 in the `MANIFEST` file.
 
@@ -43,21 +39,21 @@ in the `MANIFEST` file.
 
 - No tests (the test files are in the `t/` directory) are run at
 this stage.
-- The generated distribution is independet of the `swig` program, so
+- The generated distribution is independent of the `swig` program, so
   the distribution can be installed on a target machine that does not
   have `swig` installed.
 
 ### Stage 2
 
-In this stage, the travis build script tries to build and test the CPAN
+In this stage, the GitHub action build script tries to build and test the CPAN
 distribution generated in stage 1 above for the given system (one of
-58 setups described above). So this stage is independent of the `swig`
+22 setups described above). So this stage is independent of the `swig`
 binary.
 
-First, if the GSL version given by `$GSL` is not installed, it will download
+First, if the GSL version given by `GSL_NAME` variable is not installed, it will download
 and install it.
 
-Then it extracts the distribution in a separate directory, runs `perl Build.PL`,
+Then, it extracts the distribution in a separate directory, runs `perl Build.PL`,
 `./Build`, and finally `./Build test` runs the tests as given in the
 `/t` directory.
 
