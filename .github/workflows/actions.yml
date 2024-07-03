@@ -28,7 +28,7 @@ jobs:
         env:
           CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.PERL_DIR }}
           key: ${{ env.CACHE_KEY }}
@@ -54,7 +54,7 @@ jobs:
         env:
           CACHE_KEY: ${{ runner.os }}-gsl4-${{ matrix.gsl }}
         id: cache-gsl
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.GSL_DIR }}
           key: ${{ env.CACHE_KEY }}
@@ -85,7 +85,7 @@ jobs:
         env:
           CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.PERL_DIR }}
           key: ${{ env.CACHE_KEY }}
@@ -93,7 +93,7 @@ jobs:
         env:
           CACHE_KEY: ${{ runner.os }}-gsl4-${{ matrix.gsl }}
         id: cache-gsl
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.GSL_DIR }}
           key: ${{ env.CACHE_KEY }}
@@ -141,7 +141,7 @@ jobs:
         env:
           CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.PERL_DIR }}
           key: ${{ env.CACHE_KEY }}
@@ -149,7 +149,7 @@ jobs:
         env:
           CACHE_KEY: ${{ runner.os }}-gsl4-${{ matrix.gsl }}
         id: cache-gsl
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.GSL_DIR }}
           key: ${{ env.CACHE_KEY }}
@@ -198,7 +198,7 @@ jobs:
         env:
           CACHE_KEY: ${{ runner.os }}-perl2-${{ matrix.perl }}
         id: cache-perl
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ${{ env.PERL_DIR }}
           key: ${{ env.CACHE_KEY }}
