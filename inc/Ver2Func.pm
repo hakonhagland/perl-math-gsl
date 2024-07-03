@@ -529,7 +529,10 @@ my @ver2func = (
     },
     "2.8" => {
         new => [
-            qw//
+            qw/
+              ^gsl_vector_complex_div_real$
+              ^gsl_vector_complex_conj_memcpy$
+              /
         ]
     },
 );
