@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 SHELL ["/bin/bash", "-c"]
 RUN apt-get update && \ 
     apt-get install -y build-essential curl g++ git cpanminus \
