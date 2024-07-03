@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        perl: [38, 36, 34, 32]
+        perl: [40, 38, 36, 34, 32]
         os: [ubuntu-latest, macos-latest]
 #        include:
 #          - os: macos-latest
@@ -40,7 +40,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        gsl: [2.7, 2.6, 2.5, 2.4, 2.3]
+        gsl: [2.8, 2.7, 2.6, 2.5, 2.4, 2.3]
         os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
@@ -67,8 +67,8 @@ jobs:
     needs: [build-gsl, build-perls]
     strategy:
       matrix:
-        gsl: [2.7]
-        perl: [38]
+        gsl: [2.8]
+        perl: [40]
         os: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
@@ -125,8 +125,8 @@ jobs:
     needs: [build-dist]
     strategy:
       matrix:
-        gsl: [2.7, 2.6, 2.5, 2.4, 2.3]
-        perl: [38, 36, 34, 32]
+        gsl: [2.8, 2.7, 2.6, 2.5, 2.4, 2.3]
+        perl: [40, 38, 36, 34, 32]
     steps:
       - uses: actions/checkout@v4
       - name: set environment variables
@@ -182,7 +182,7 @@ jobs:
     needs: [build-dist]
     strategy:
       matrix:
-        perl: [38, 36]
+        perl: [40, 38, 36]
         #gsl: [2.7, 2.6]
         # NOTE: on macos we will not build against a pre-installed gsl, this will cause
         #     Build.PL to download the latest gsl version from the internet instead
