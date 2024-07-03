@@ -550,6 +550,7 @@ my @ver2func = (
               ^gsl_linalg_SV_solve2$
               ^gsl_linalg_SV_lssolve$
               ^gsl_rstat_norm$
+              ^gsl_multifit_linear_lcurvature_menger$
               /
         ]
     },
