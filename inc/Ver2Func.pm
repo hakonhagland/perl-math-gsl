@@ -526,8 +526,12 @@ my @ver2func = (
 
               /
         ]
-    }
-
+    },
+    "2.8" => {
+        new => [
+            qw//
+        ]
+    },
 );
 
 my ( %index, @info, @versions );
