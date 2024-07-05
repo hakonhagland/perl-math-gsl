@@ -57,12 +57,7 @@ sub GSL_LINALG_LU_DECOMP : Tests {
         # From version 2.8 onwards, the result value for a singular matrix is an integer
         #  such that U(i,i) = 0
         # TODO: For some reason this is not the case on macOS yet
-        if ($^O eq 'darwin') {
-            is_deeply( [ $result, $signum ], [ 0, 1] );
-        }
-        else {
-            is_deeply( [ $result, $signum ], [ 4, 1] );
-        }
+        is_deeply( [ $result, $signum ], [ 4, 1] );
     }
     else {
         is_deeply( [ $result, $signum ], [ 0, 1] );

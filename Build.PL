@@ -33,7 +33,8 @@ our $MIN_GSL_VERSION = "1.15";
 my $gsl_conf;
 
 check_alien_gsl_share_dir();
-$gsl_conf = check_gsl_version();
+$gsl_conf = check_gsl_version_gsl_config();
+$gsl_conf = check_gsl_version_alien_gsl() if not $gsl_conf;
 $gsl_conf = check_gsl_version_pkgconfig() if not $gsl_conf;
 
 my ($major,$minor,$tiny) = split /\./, $gsl_conf->{gsl_version};
@@ -254,8 +255,56 @@ sub check_alien_gsl_share_dir {
     if (Alien::GSL->install_type eq "share") {
         my $dist_dir = Alien::GSL->dist_dir;
         my $bin_dir = File::Spec->catfile( $dist_dir, "bin" );
+        # Try to use gsl-config in the share directory first, so add that to the PATH
         $ENV{PATH} .= ":$bin_dir";
     }
+    else {
+        # If Alien::GSL->install_type is "system", gsl-config
+        # might be in the PATH already, but not necessarily. The user could also have installed
+        # GSL in a non-standard location, then set PKG_CONFIG_PATH before installing Alien::GSL.
+        my $command = 'gsl-config';
+        my $check_command = $^O eq 'MSWin32' ? 'where' : 'which';
+        # Check if the command exists in PATH
+        my $exists = qx($check_command $command 2>/dev/null);
+        if (!$exists) {
+            # Alien::GSL property bin_dir is usually not set in this case
+            my $bin_dir = Alien::GSL->bin_dir;
+            if ($bin_dir && (-d $bin_dir)) {
+                $ENV{PATH} .= ":$bin_dir";
+            }
+            else {
+                # We might get lucky and derive the bin dir from the libs value
+                my $libs = Alien::GSL->libs;
+                my $lib_dir = $libs =~ m{-L(\S+)} ? $1 : '';
+                if ($lib_dir) {
+                    my $bin_dir = $lib_dir =~ s{/lib}{/bin}r;
+                    if (-d $bin_dir) {
+                        $ENV{PATH} .= ":$bin_dir";
+                    }
+                }
+            }
+        }
+    }
+}
+
+sub check_gsl_version_alien_gsl {
+    my $gsl_version = Alien::GSL->version;
+    if (!defined $gsl_version) {
+        print "***
+*** Can't find GSL with Alien::GSL (this should not happen)
+*** Trying with PkgConfig.\n";
+        return undef;
+    }
+    my $libs = Alien::GSL->libs;
+    my $config = Alien::GSL->runtime_prop;
+    my $prefix = $config->{prefix};
+    my $cflags = Alien::GSL->cflags;
+    return {
+        gsl_version => $gsl_version,
+        gsl_prefix  => $prefix,
+        gsl_libs    => $libs,
+        gsl_cflags  => $cflags,
+    };
 }
 
 sub check_gsl_version_pkgconfig {
@@ -305,7 +354,7 @@ sub check_gsl_version_pkgconfig {
     };
 }
 
-sub check_gsl_version {
+sub check_gsl_version_gsl_config {
 
     print "Checking for GSL using gsl-config\n";
 
