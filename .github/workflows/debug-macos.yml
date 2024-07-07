@@ -16,6 +16,9 @@ jobs:
       uses: shogo82148/actions-setup-perl@v1
       with:
         perl-version: '5.40'
+    - name: Install swig
+      run: |
+        brew install swig
     - name: Build Math::GSL
       run: |
        cpanm Alien::GSL
