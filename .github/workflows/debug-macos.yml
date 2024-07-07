@@ -18,6 +18,7 @@ jobs:
         perl-version: '5.40'
     - name: Build Math::GSL
       run: |
+       cpanm Module::Build
        perl Build.PL
        ./Build installdeps --cpan_client cpanm
        ./Build
