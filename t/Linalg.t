@@ -56,7 +56,7 @@ sub GSL_LINALG_LU_DECOMP : Tests {
     my ($result, $signum) = gsl_linalg_LU_decomp($base->raw, $permutation);
     my $version= gsl_version();
     my ($major, $minor) = split /\./, $version;
-    Math::GSL::Test::dump_lu_matrix([$base->as_list], $permutation, 4, 4);
+    #Math::GSL::Test::dump_lu_matrix([$base->as_list], $permutation, 4, 4);
     if ($major >= 2 && $minor >= 8) {
         # From version 2.8 onwards, the result value for a singular matrix is an integer
         #  such that U(i,i) = 0
