@@ -44,7 +44,10 @@ sub GSL_LINALG_LU_DECOMP : Tests {
     $base->set_row(0, [0,1,2,3])
          ->set_row(1, [5,6,7,8])
          ->set_row(2, [9,10,11,12])
-         ->set_row(3, [13,14,15,16]);
+         # NOTE: Using [13,14,15,16] here causes a singular matrix but due to 
+         #     rounding errors it is not recognized as such on some platforms,
+         #    so we will instead repeat the third row to make it singular in a more obvious way
+         ->set_row(3, [9,10,11,12]);
     my $permutation = gsl_permutation_alloc(4);
     gsl_permutation_init($permutation);
     my $first = Math::GSL::Matrix->new(4,4);
