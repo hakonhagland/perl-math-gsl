@@ -28,7 +28,7 @@ Commit the changes above to the master branch, and push them to the remote (orig
 a tarball:
 
 ```
-cd developer/docker
+cd developer/gen_dist
 ./build_image.sh
 ./run.sh 2.7  # <-- Uses GSL version 2.7 to build the distribution
 ```
