@@ -578,7 +578,11 @@ sub handle_unsigned_char_platforms {
     my $version = "2.7";
     my $vers_idx = $index{$version};
     my $info_2_7 = $info[$vers_idx];
-    $info_2_7->{deprecated} = [ '^gsl_matrix_char_norm1$' ];
+    # Remove these two functions if the platform does not support signed char
+    $info_2_7->{deprecated} = [
+        '^gsl_matrix_char_norm1$',
+        '^gsl_spmatrix_char_norm1$',
+    ];
 }
 
 sub new {
