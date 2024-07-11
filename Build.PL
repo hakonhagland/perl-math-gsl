@@ -279,7 +279,7 @@ END
     my $executable = catfile($tempdir, $prog_name);
     my $sub_name = 'platform_uses_signed_char()';
     # Compile the C program
-    system('gcc', '-o', $executable, $prog_name_path);
+    system($Config{'cc'}, '-o', $executable, $prog_name_path);
     if ($? == -1) {
         print "${sub_name}: failed to execute: $!\n";
     }
