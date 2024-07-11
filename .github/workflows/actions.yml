@@ -126,6 +126,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build-dist]
     strategy:
+      fail-fast: false
       matrix:
         gsl: [2.8, 2.7, 2.6, 2.5, 2.4, 2.3]
         perl: [40, 38, 36, 34, 32]
@@ -183,6 +184,7 @@ jobs:
     runs-on: macos-latest
     needs: [build-dist]
     strategy:
+      fail-fast: false
       matrix:
         perl: [40, 38, 36]
         #gsl: [2.7, 2.6]
