@@ -121,6 +121,7 @@ ARG PERL_DIR=/usr/local/perl
 
 ENV LD_LIBRARY_PATH=${GSL_DIR}/lib
 ENV PKG_CONFIG_PATH=${GSL_DIR}/lib/pkgconfig
+ENV PATH="${PERL_DIR}/bin:${PATH}"
 # Update PATH such that we can find the gsl-config script
 ENV PATH="${GSL_DIR}/bin:$PATH"
 
