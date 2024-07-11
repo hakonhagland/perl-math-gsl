@@ -577,8 +577,8 @@ sub handle_unsigned_char_platforms {
 
     my $version = "2.7";
     my $vers_idx = $index{$version};
-    my $info = $info[$vers_idx];
-    $info->{deprecated} = [ '^gsl_matrix_char_norm1$' ];
+    my $info_2_7 = $info[$vers_idx];
+    $info_2_7->{deprecated} = [ '^gsl_matrix_char_norm1$' ];
 }
 
 sub new {
