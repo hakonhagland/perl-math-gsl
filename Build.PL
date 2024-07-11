@@ -27,6 +27,7 @@ use GSLBuilder;
 use Ver2Func;
 use File::Spec::Functions qw/:ALL/;
 use Alien::GSL;
+use File::Temp qw(tempdir);
 
 our $MIN_GSL_VERSION = "1.15";
 
@@ -82,8 +83,9 @@ if ($Config{archname} =~ /x86_64|amd64/ ) {
 }
 # this causes warnings with clang + OSX
 $ccflags = $Config{cccdlflags} . ' ' . $ccflags unless GSLBuilder::is_darwin();
+my $platform_uses_signed_char = platform_uses_signed_char();
 
-my $ver2func = Ver2Func->new( $gsl_conf->{gsl_version} );
+my $ver2func = Ver2Func->new( $gsl_conf->{gsl_version}, $platform_uses_signed_char );
 
 my $cleanup = qq{
                  xs/*_wrap*.c core *.core swig/system.i swig/renames.i
@@ -250,6 +252,65 @@ sub try_cflags {
     print "no\n";
     return '';
 }
+
+# Returns true if the platform uses signed char
+sub platform_uses_signed_char {
+    my $c_prog = <<'END';
+#include <limits.h>  // Include limits.h to use CHAR_MIN
+// Test if char is signed on the given platform
+// If CHAR_MIN is not 0, then char is signed
+// Returns 0 if char is signed, 1 if char is unsigned
+int main() {
+    if (CHAR_MIN != 0) {
+        return 0;
+    }
+    else {
+        return 1;
+    }
+}
+END
+    # Create a temporary directory for the C program and executable
+    my $tempdir = tempdir(CLEANUP => 1);
+    my $prog_name = 'signed_char';
+    my $prog_name_path = catfile($tempdir, "${prog_name}.c");
+    open (my $fh, '>', $prog_name_path) or die "Could not open file '$prog_name_path' $!";
+    print $fh $c_prog;
+    close $fh;
+    my $executable = catfile($tempdir, $prog_name);
+    my $sub_name = 'platform_uses_signed_char()';
+    # Compile the C program
+    system('gcc', '-o', $executable, $prog_name_path);
+    if ($? == -1) {
+        print "${sub_name}: failed to execute: $!\n";
+    }
+    elsif ($? & 127) {
+        printf "${sub_name}: child died with signal %d, %s coredump\n",
+            ($? & 127),  ($? & 128) ? 'with' : 'without';
+    }
+    elsif ($? >> 8) {
+        printf "${sub_name}: gcc: failed to compile: exit value %d\n", $? >> 8;
+    }
+    # Execute the compiled program and capture the return value
+    system($executable);
+    if ($? == -1) {
+        die "${sub_name}: Failed to execute the compiled program: $!";
+    }
+    elsif ($? & 127) {
+        printf "${sub_name}: child died with signal %d, %s coredump\n",
+            ($? & 127),  ($? & 128) ? 'with' : 'without';
+    }
+    # The return value from the C program is in the high 8 bits of the exit status
+    my $return_value = $? >> 8;
+    if ($return_value == 0) {
+        print "platform: char is signed\n";
+    }
+    else {
+        print "platform: char is unsigned\n";
+    }
+    return $return_value == 0;
+}
+
+
 
 sub check_alien_gsl_share_dir {
     if (Alien::GSL->install_type eq "share") {
