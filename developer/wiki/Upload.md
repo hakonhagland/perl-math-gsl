@@ -13,6 +13,7 @@ and in the Pod at line 37.
 
 ## Update copyright year in Pod files
 
+If the year has changed since last upload:
 ```
 cd developer/bin
 ./update_copyright.pl

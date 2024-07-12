@@ -132,7 +132,6 @@ RUN apt-get update && \
         curl \
         g++ \
         git \
-        cpanminus \
         vim \
         sudo \
         wget \
@@ -142,7 +141,6 @@ RUN apt-get update && \
         libtool \
         libssl-dev \
         libz-dev \
-        perl
 
 # Copy compiled Perl and modules from the cross-compile stages
 COPY --from=cross-compile-modules ${PERL_DIR} ${PERL_DIR}
