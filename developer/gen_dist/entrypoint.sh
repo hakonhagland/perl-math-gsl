@@ -33,6 +33,7 @@ export PKG_CONFIG_PATH="$GSL_INST_DIR"/"$TARBALL_GSL"/lib/pkgconfig
 
 git clone https://github.com/hakonhagland/Alien-GSL-Shared.git
 cd Alien-GSL-Shared
+cpanm -n -v --installdeps .
 perl Makefile.PL
 make
 #make test  # Tests are failing currently
