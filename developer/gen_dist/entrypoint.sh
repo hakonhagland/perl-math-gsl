@@ -31,9 +31,16 @@ export LD_LIBRARY_PATH="$GSL_INST_DIR"/"$TARBALL_GSL"/lib
 export PATH="$GSL_INST_DIR"/"$TARBALL_GSL"/bin:"$PATH"
 export PKG_CONFIG_PATH="$GSL_INST_DIR"/"$TARBALL_GSL"/lib/pkgconfig
 
+git clone https://github.com/hakonhagland/Alien-GSL-Shared.git
+cd Alien-GSL-Shared
+perl Makefile.PL
+make
+#make test  # Tests are failing currently
+make install
+cd ..
 git clone https://github.com/hakonhagland/perl-math-gsl.git
 cd perl-math-gsl
-cpanm -v Alien::GSL
+#cpanm -v Alien::GSL
 cpanm Module::Build
 perl Build.PL
 ./Build installdeps --cpan_client cpanm
