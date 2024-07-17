@@ -2,7 +2,7 @@
 
 cpanm -vn Net::SSLeay
 cpanm -n Alien::Build
-cpanm Math::GSL::Alien
+cpanm -vn Math::GSL::Alien
 cpanm Module::Build
 mkdir -p xs
 perl Build.PL
