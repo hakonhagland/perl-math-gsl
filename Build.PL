@@ -26,7 +26,7 @@ use lib 'inc';
 use GSLBuilder;
 use Ver2Func;
 use File::Spec::Functions qw/:ALL/;
-use Alien::GSL::Shared;
+use Math::GSL::Alien;
 use File::Temp qw(tempdir);
 
 our $MIN_GSL_VERSION = "1.15";
@@ -146,7 +146,7 @@ my $builder = GSLBuilder->new(
     configure_requires => {
         'PkgConfig'       => '0.07720',
         'Module::Build'   => '0.38',
-        'Alien::GSL::Shared'      => '1.00',
+        'Math::GSL::Alien'      => '1.01',
     },
     swig_version          => $swig_version,
     current_version       => $gsl_conf->{gsl_version},
@@ -313,29 +313,29 @@ END
 
 
 sub check_alien_gsl_share_dir {
-    if (Alien::GSL::Shared->install_type eq "share") {
-        my $dist_dir = Alien::GSL::Shared->dist_dir;
+    if (Math::GSL::Alien->install_type eq "share") {
+        my $dist_dir = Math::GSL::Alien->dist_dir;
         my $bin_dir = File::Spec->catfile( $dist_dir, "bin" );
         # Try to use gsl-config in the share directory first, so add that to the PATH
         $ENV{PATH} .= ":$bin_dir";
     }
     else {
-        # If Alien::GSL::Shared->install_type is "system", gsl-config
+        # If Math::GSL::Alien->install_type is "system", gsl-config
         # might be in the PATH already, but not necessarily. The user could also have installed
-        # GSL in a non-standard location, then set PKG_CONFIG_PATH before installing Alien::GSL::Shared.
+        # GSL in a non-standard location, then set PKG_CONFIG_PATH before installing Math::GSL::Alien.
         my $command = 'gsl-config';
         my $check_command = $^O eq 'MSWin32' ? 'where' : 'which';
         # Check if the command exists in PATH
         my $exists = qx($check_command $command 2>/dev/null);
         if (!$exists) {
-            # Alien::GSL::Shared property bin_dir is usually not set in this case
-            my $bin_dir = Alien::GSL::Shared->bin_dir;
+            # Math::GSL::Alien property bin_dir is usually not set in this case
+            my $bin_dir = Math::GSL::Alien->bin_dir;
             if ($bin_dir && (-d $bin_dir)) {
                 $ENV{PATH} .= ":$bin_dir";
             }
             else {
                 # We might get lucky and derive the bin dir from the libs value
-                my $libs = Alien::GSL::Shared->libs;
+                my $libs = Math::GSL::Alien->libs;
                 my $lib_dir = $libs =~ m{-L(\S+)} ? $1 : '';
                 if ($lib_dir) {
                     my $bin_dir = $lib_dir =~ s{/lib}{/bin}r;
@@ -349,17 +349,17 @@ sub check_alien_gsl_share_dir {
 }
 
 sub check_gsl_version_alien_gsl {
-    my $gsl_version = Alien::GSL::Shared->version;
+    my $gsl_version = Math::GSL::Alien->version;
     if (!defined $gsl_version) {
         print "***
-*** Can't find GSL with Alien::GSL::Shared (this should not happen)
+*** Can't find GSL with Math::GSL::Alien (this should not happen)
 *** Trying with PkgConfig.\n";
         return undef;
     }
-    my $libs = Alien::GSL::Shared->libs;
-    my $config = Alien::GSL::Shared->runtime_prop;
+    my $libs = Math::GSL::Alien->libs;
+    my $config = Math::GSL::Alien->runtime_prop;
     my $prefix = $config->{prefix};
-    my $cflags = Alien::GSL::Shared->cflags;
+    my $cflags = Math::GSL::Alien->cflags;
     return {
         gsl_version => $gsl_version,
         gsl_prefix  => $prefix,
