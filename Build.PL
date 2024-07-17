@@ -144,9 +144,9 @@ my $builder = GSLBuilder->new(
     },
     sign                  => 0,
     configure_requires => {
-        'PkgConfig'       => '0.07720',
-        'Module::Build'   => '0.38',
-        'Math::GSL::Alien'      => '1.01',
+        'PkgConfig'         => '0.07720',
+        'Module::Build'     => '0.38',
+        'Math::GSL::Alien'  => '1.03',
     },
     swig_version          => $swig_version,
     current_version       => $gsl_conf->{gsl_version},
