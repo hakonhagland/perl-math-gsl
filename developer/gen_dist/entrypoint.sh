@@ -33,7 +33,7 @@ export PKG_CONFIG_PATH="$GSL_INST_DIR"/"$TARBALL_GSL"/lib/pkgconfig
 
 git clone https://github.com/hakonhagland/perl-math-gsl.git
 cd perl-math-gsl
-cpanm -v Math::GSL::Alien
+cpanm -vn Math::GSL::Alien
 cpanm Module::Build
 perl Build.PL
 ./Build installdeps --cpan_client cpanm
