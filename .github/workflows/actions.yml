@@ -267,7 +267,8 @@ jobs:
           update: true
           install: base-devel mingw-w64-x86_64-toolchain
       - name: Add MSYS2 to Path
-        run: echo "::add-path::C:\msys64\usr\bin"
+        run: |
+          echo "C:\msys64\usr\bin" >> $env:GITHUB_PATH
       - name: install perl modules and build and test
         shell: pwsh
         # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
