@@ -262,15 +262,10 @@ jobs:
           $DISTDIR = $DISTNAME -replace '\.tar\.gz$', ''
           echo "DISTDIR=$DISTDIR" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
       - name: Set up MSYS2
-        run: |
-          # Download and install MSYS2
-          curl -L -o msys2-x86_64.exe https://repo.msys2.org/distrib/x86_64/msys2-base-x86_64-latest.exe
-          Start-Process msys2-x86_64.exe -ArgumentList '--root C:\msys64 --script install' -NoNewWindow -Wait
-          # Update the package database and core system packages
-          C:\msys64\usr\bin\bash -lc "pacman -Syuu --noconfirm"
-          C:\msys64\usr\bin\bash -lc "pacman -Syu --noconfirm"
-          # Install the required packages
-          C:\msys64\usr\bin\bash -lc "pacman -S --noconfirm base-devel mingw-w64-x86_64-toolchain"
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: base-devel mingw-w64-x86_64-toolchain
       - name: Add MSYS2 to Path
         run: echo "::add-path::C:\msys64\usr\bin"
       - name: install perl modules and build and test
