@@ -261,18 +261,26 @@ jobs:
           tar -zxvf $DISTNAME
           $DISTDIR = $DISTNAME -replace '\.tar\.gz$', ''
           echo "DISTDIR=$DISTDIR" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-#      - name: Enable long paths
-#        run: |
-#          reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1 /f
-      - name: Check if long paths are enabled
+      - name: Set up MSYS2
         run: |
-            reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled
+          # Download and install MSYS2
+          curl -L -o msys2-x86_64.exe https://repo.msys2.org/distrib/x86_64/msys2-base-x86_64-latest.exe
+          start /wait msys2-x86_64.exe -y -r -o C:\msys64
+          # Update the package database and core system packages
+          C:\msys64\usr\bin\bash -lc "pacman -Syuu --noconfirm"
+          C:\msys64\usr\bin\bash -lc "pacman -Syu --noconfirm"
+          # Install the required packages
+          C:\msys64\usr\bin\bash -lc "pacman -S --noconfirm base-devel mingw-w64-x86_64-toolchain"
+      - name: Add MSYS2 to Path
+        run: echo "::add-path::C:\msys64\usr\bin"
       - name: install perl modules and build and test
         shell: pwsh
         # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
         run: |
           $BASEDIR = $PWD
           cd $env:DISTDIR
+          $env:PERL_ALIEN_MSYS_BIN = "C:\msys64\usr\bin"
+          &cpanm -vn Alien::MSYS
           &cpanm -vn Net::SSLeay
           &cpanm -n Alien::Build
           &cpanm -vn Math::GSL::Alien@1.05
