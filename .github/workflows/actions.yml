@@ -255,12 +255,14 @@ jobs:
         with:
           name: math_gsl_dist_name
       - name: extract dist
+        shell: bash
         run: |
           DISTNAME=$(<math-gsl-dist-name.txt)
           tar zxvf $DISTNAME
           DISTDIR=$(perl -pe 's/\.tar.gz$//' <<<"$DISTNAME")
           echo "DISTDIR=$DISTDIR" >> $GITHUB_ENV
       - name: install perl modules and build and test
+        shell: bash
         # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
         run: |
           BASEDIR=$PWD
