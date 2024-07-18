@@ -265,7 +265,7 @@ jobs:
         run: |
           # Download and install MSYS2
           curl -L -o msys2-x86_64.exe https://repo.msys2.org/distrib/x86_64/msys2-base-x86_64-latest.exe
-          start /wait msys2-x86_64.exe -y -r -o C:\msys64
+          Start-Process msys2-x86_64.exe -ArgumentList '--root C:\msys64 --script install' -NoNewWindow -Wait
           # Update the package database and core system packages
           C:\msys64\usr\bin\bash -lc "pacman -Syuu --noconfirm"
           C:\msys64\usr\bin\bash -lc "pacman -Syu --noconfirm"
