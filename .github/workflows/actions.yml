@@ -269,14 +269,16 @@ jobs:
       - name: Add MSYS2 to Path
         run: |
           echo "C:\msys64\usr\bin" >> $env:GITHUB_PATH
+          echo "PATH = $env:PATH"
       - name: install perl modules and build and test
         shell: pwsh
         # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
         run: |
+          echo "PATH = $env:PATH"
           $BASEDIR = $PWD
           cd $env:DISTDIR
           $env:PERL_ALIEN_MSYS_BIN = "C:\msys64\usr\bin"
-          &cpanm -vn Alien::MSYS
+          cpanm -vn Alien::MSYS
           &cpanm -vn Net::SSLeay
           &cpanm -n Alien::Build
           &cpanm -vn Math::GSL::Alien@1.05
