@@ -261,6 +261,12 @@ jobs:
           tar -zxvf $DISTNAME
           $DISTDIR = $DISTNAME -replace '\.tar\.gz$', ''
           echo "DISTDIR=$DISTDIR" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+#      - name: Enable long paths
+#        run: |
+#          reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1 /f
+      - name: Check if long paths are enabled
+        run: |
+            reg query HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled
       - name: install perl modules and build and test
         shell: pwsh
         # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
