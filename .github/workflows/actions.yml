@@ -224,8 +224,46 @@ jobs:
           DISTDIR=$(perl -pe 's/\.tar.gz$//' <<<"$DISTNAME")
           echo "DISTDIR=$DISTDIR" >> $GITHUB_ENV
       - name: install perl modules and build and test
-        # NOTE: This should first download and install libgsl using the Alien::GSL module
+        # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
         run: |
           BASEDIR=$PWD
           cd $DISTDIR
           $BASEDIR/.github/scripts/build_and_test.sh
+  install-dist-windows:
+    runs-on: windows-latest
+    needs: [build-dist]
+    strategy:
+      fail-fast: false
+      matrix:
+        perl: [40, 38, 36]
+        #gsl: [2.7, 2.6]
+        # NOTE: on windows we will not build against a pre-installed gsl, this will cause
+        #     Build.PL to download the latest gsl version from the internet instead
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: ${{ matrix.perl }}
+          distribution: strawberry
+      - name: Download dist
+        uses: actions/download-artifact@v3
+        with:
+          name: math_gsl_dist
+      - name: Download dist name
+        uses: actions/download-artifact@v3
+        with:
+          name: math_gsl_dist_name
+      - name: extract dist
+        run: |
+          DISTNAME=$(<math-gsl-dist-name.txt)
+          tar zxvf $DISTNAME
+          DISTDIR=$(perl -pe 's/\.tar.gz$//' <<<"$DISTNAME")
+          echo "DISTDIR=$DISTDIR" >> $GITHUB_ENV
+      - name: install perl modules and build and test
+        # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
+        run: |
+          BASEDIR=$PWD
+          cd $DISTDIR
+          $BASEDIR/.github/scripts/build_and_test.sh
+        
