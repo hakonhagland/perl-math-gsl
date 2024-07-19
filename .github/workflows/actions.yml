@@ -270,6 +270,7 @@ jobs:
       - name: Add MSYS2 to Path
         run: |
           perl -V
+          where.exe perl
           echo "C:\msys64\usr\bin" >> $env:GITHUB_PATH
           echo "PATH = $env:PATH"
 
