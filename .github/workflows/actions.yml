@@ -268,7 +268,6 @@ jobs:
           install: base-devel mingw-w64-x86_64-toolchain
       - name: Add MSYS2 to Path
         run: |
-          echo "D:\a\_actions\shogo82148\actions-setup-perl\v1\bin" >> $env:GITHUB_PATH
           echo "C:\msys64\usr\bin" >> $env:GITHUB_PATH
           echo "PATH = $env:PATH"
 
@@ -294,6 +293,7 @@ jobs:
         shell: pwsh
         # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
         run: |
+          $env:PATH = "D:\a\_actions\shogo82148\actions-setup-perl\v1\bin;$env:PATH"
           echo "PATH = $env:PATH"
           perl -V
           $BASEDIR = $PWD
