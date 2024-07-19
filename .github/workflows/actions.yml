@@ -257,6 +257,7 @@ jobs:
       - name: extract dist
         shell: pwsh
         run: |
+          perl -V
           $DISTNAME = Get-Content -Path math-gsl-dist-name.txt
           tar -zxvf $DISTNAME
           $DISTDIR = $DISTNAME -replace '\.tar\.gz$', ''
@@ -268,6 +269,7 @@ jobs:
           install: base-devel mingw-w64-x86_64-toolchain
       - name: Add MSYS2 to Path
         run: |
+          perl -V
           echo "C:\msys64\usr\bin" >> $env:GITHUB_PATH
           echo "PATH = $env:PATH"
 
