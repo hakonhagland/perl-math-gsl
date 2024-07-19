@@ -270,15 +270,28 @@ jobs:
         run: |
           echo "C:\msys64\usr\bin" >> $env:GITHUB_PATH
           echo "PATH = $env:PATH"
+      - name: Verify cpanm existence and check shebang
+        shell: pwsh
+        run: |
+          $cpanmPath = "D:\a\_actions\shogo82148\actions-setup-perl\v1\bin\cpanm"
+          if (Test-Path $cpanmPath) {
+            echo "cpanm found at $cpanmPath"
+            Get-Content $cpanmPath -First 1 | ForEach-Object {echo "Shebang: $_"}
+          } else {
+            echo "cpanm not found at $cpanmPath"
+          }
       - name: install perl modules and build and test
         shell: pwsh
         # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
         run: |
           echo "PATH = $env:PATH"
+          ls D:\a\_actions\shogo82148\actions-setup-perl\v1\bin\cpanm
           $BASEDIR = $PWD
           cd $env:DISTDIR
           $env:PERL_ALIEN_MSYS_BIN = "C:\msys64\usr\bin"
-          cpanm -vn Alien::MSYS
+          echo "ok"
+          &cpanm -vn Alien::MSYS
+          echo "ok2"
           &cpanm -vn Net::SSLeay
           &cpanm -n Alien::Build
           &cpanm -vn Math::GSL::Alien@1.05
