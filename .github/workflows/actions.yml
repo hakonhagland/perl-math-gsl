@@ -261,6 +261,7 @@ jobs:
           tar -zxvf $DISTNAME
           $DISTDIR = $DISTNAME -replace '\.tar\.gz$', ''
           echo "DISTDIR=$DISTDIR" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
       - name: Add Strawberry Perl to PATH
         shell: pwsh
         run: |
@@ -269,7 +270,7 @@ jobs:
             echo $perlPaths
             $perlPath = $perlPaths | Select-String -Pattern "C:\\hostedtoolcache\\windows\\strawberry-perl"
             if ($perlPath) {
-              $perlDir = [System.IO.Path]::GetDirectoryName($perlPath -split "`n")[0] # Get the first matching path and its directory
+              $perlDir = [System.IO.Path]::GetDirectoryName(($perlPath | Select-Object -First 1).Line)
               echo "Strawberry Perl found at $perlDir"
               echo "STRAWBERRY_PERL_PATH=$perlDir" >> $env:GITHUB_ENV
             } else {
