@@ -295,6 +295,7 @@ jobs:
           cd $env:DISTDIR
           $env:PERL_ALIEN_MSYS_BIN = "C:\msys64\usr\bin"
           &cpanm -vn Alien::MSYS
+          perl -MAlien::MSYS -E "say Alien::MSYS->msys_path"
           &cpanm -vn Net::SSLeay
           &cpanm -n Alien::Build
           &cpanm -vn Math::GSL::Alien@1.05
