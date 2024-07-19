@@ -113,12 +113,12 @@ jobs:
         run: |
           ./.github/scripts/build_dist.sh
       - name: Save dist as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: math_gsl_dist
           path: ${{ env.MATH_GSL_DISTNAME }}
       - name: Save name of dist as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: math_gsl_dist_name
           path: math-gsl-dist-name.txt
@@ -162,11 +162,11 @@ jobs:
           PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
           GSL_NAME: gsl-${{ matrix.gsl }}
           GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist
       - name: Download dist name
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist_name
       - name: extract dist
@@ -210,11 +210,11 @@ jobs:
         env:
           PERL_NAME: perl-5.${{ matrix.perl }}
           PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist
       - name: Download dist name
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist_name
       - name: extract dist
@@ -247,11 +247,11 @@ jobs:
           perl-version: ${{ matrix.perl }}
           distribution: strawberry
       - name: Download dist
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist
       - name: Download dist name
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist_name
       - name: extract dist
@@ -268,6 +268,7 @@ jobs:
           install: base-devel mingw-w64-x86_64-toolchain
       - name: Add MSYS2 to Path
         run: |
+          echo "D:\a\_actions\shogo82148\actions-setup-perl\v1\bin" >> $env:GITHUB_PATH
           echo "C:\msys64\usr\bin" >> $env:GITHUB_PATH
           echo "PATH = $env:PATH"
 
