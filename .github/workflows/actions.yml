@@ -270,22 +270,31 @@ jobs:
         run: |
           echo "C:\msys64\usr\bin" >> $env:GITHUB_PATH
           echo "PATH = $env:PATH"
+
       - name: Verify cpanm existence and check shebang
         shell: pwsh
         run: |
-          $cpanmPath = "D:\a\_actions\shogo82148\actions-setup-perl\v1\bin\cpanm"
-          if (Test-Path $cpanmPath) {
-            echo "cpanm found at $cpanmPath"
-            Get-Content $cpanmPath -First 1 | ForEach-Object {echo "Shebang: $_"}
-          } else {
-            echo "cpanm not found at $cpanmPath"
-          }
+            $cpanmPath = "D:\a\_actions\shogo82148\actions-setup-perl\v1\bin\cpanm"
+            $cpanmBatPath = "D:\a\_actions\shogo82148\actions-setup-perl\v1\bin\cpanm.bat"
+            if (Test-Path $cpanmPath) {
+              echo "cpanm found at $cpanmPath"
+              Get-Content $cpanmPath -First 1 | ForEach-Object {echo "Shebang: $_"}
+            } else {
+              echo "cpanm not found at $cpanmPath"
+            }
+            if (Test-Path $cpanmBatPath) {
+              echo "cpanm.bat found at $cpanmBatPath"
+              echo "Contents of cpanm.bat:"
+              Get-Content $cpanmBatPath | ForEach-Object {echo $_}
+            } else {
+              echo "cpanm.bat not found at $cpanmBatPath"
+            }
       - name: install perl modules and build and test
         shell: pwsh
         # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
         run: |
           echo "PATH = $env:PATH"
-          ls D:\a\_actions\shogo82148\actions-setup-perl\v1\bin\cpanm
+          perl -V
           $BASEDIR = $PWD
           cd $env:DISTDIR
           $env:PERL_ALIEN_MSYS_BIN = "C:\msys64\usr\bin"
