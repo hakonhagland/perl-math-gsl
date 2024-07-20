@@ -295,13 +295,16 @@ jobs:
         shell: pwsh
         # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
         run: |
-          $env:PATH = "$env:STRAWBERRY_PERL_PATH;$env:PATH"
+          #$env:PATH = "$env:STRAWBERRY_PERL_PATH;$env:PATH"
+          $Perl = "$env:STRAWBERRY_PERL_PATH\perl"
+          $Perlcpanm = "$env:STRAWBERRY_PERL_PATH\cpanm"
           echo "PATH = $env:PATH"
-          perl -V
+          & $Perl -V
           $BASEDIR = $PWD
           cd $env:DISTDIR
           $env:PERL_ALIEN_MSYS_BIN = "C:\msys64\usr\bin"
-          &cpanm -vn Alien::MSYS
+          & $Perl $Perlcpanm -vn Alien::MSYS
+          $env:PATH = "$env:STRAWBERRY_PERL_PATH;$env:PATH"
           perl -MAlien::MSYS -E "say Alien::MSYS->msys_path"
           &cpanm -vn Net::SSLeay
           &cpanm -n Alien::Build
