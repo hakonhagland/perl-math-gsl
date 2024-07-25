@@ -22,6 +22,10 @@ cd developer/bin
 
 Update the `Changes` file.
 
+## Push to GitHub
+
+Push the changes introduced above to GitHub
+
 ## Build the CPAN distribution
 
 Commit the changes above to the master branch, and push them to the remote (origin). Next, to build
