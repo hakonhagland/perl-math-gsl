@@ -1,5 +1,10 @@
 =head1 Math::GSL Changes
 
+=head v0.49 - July 2024
+
+    - Fix Pod errors in Changes file
+    - Add Git meta data to be used by the metacpan.org web site
+
 =head v0.48 - July 2024
 
     - Fix build failure for gcc 14 on debian (emollier)
