@@ -1,41 +1,50 @@
 =head1 Math::GSL Changes
 
 =head v0.48 - July 2024
+
     - Fix build failure for gcc 14 on debian (emollier)
 
 =head v0.47 - July 2024
+
     - Build shared libgsl.so by default. See https://github.com/PerlAlien/Alien-GSL/issues/17 for
       more information.
 
 =head v0.46 - July 2024
+
     - Fixes some test failures compared to version 0.45 released at metacpan.org: 
     - Linalg.t : "GSL LINALG LU DECOMP" returned 0 instead of 4
     - Matrix.so: undefined symbol: gsl_matrix_char_norm1 and gsl_spmatrix_char_norm1
     - Fixes wrong version number in Changes file
 
 =head v0.45 - July 2024
+
     - Added support for GSL 2.8 (hakonhagland)
     - Update to distribution metadata (mohawk2)
 
 =head1 v0.44 - December 2023
+
     - Added support for GSL 2.7.1 (yewtc)
 
 =head1 v0.43 - July 2021
+
     - Added support for GSL 2.7 (hakonhagland)
     - Added support for macOS (hakonhagland)
     - Moved cotinuous integration testing from travis.ci to GitHub Actions (hakonhagland)
     - Pod spelling corrections (mohawk2)
 
 =head1 v0.42 - June 2020
+
     - Disabled two tests in SF.t and GSL.t that failed on some platforms.
 
 =head1 v0.41 - June 2020
+
     - Added support for GSL 2.6 (hakonhagland)
     - Added docker file support for building a CPAN distribution
     - Added support for gsl_odeiv_system (hakonhagland)
     - Add support for Debian-specific version 1.16.1, which caused test failures
 
 =head1 v0.40 - December 2018
+
     - added support for GSL 2.5 (djerius)
     - vast improvements to Travis CI test infrastructure (djerius)
     - added random method in Math::GSL::Matrix (Rui Meira)
@@ -49,6 +58,7 @@
     - Math::GSL::Rstat now requires GSL 2.1 and higher
 
 =head1 v0.39 - September 2016
+
     - Fix Debian Bug reported by Niko Tyni
         https://bugs.debian.org/826009
     - Extensive fixes to allow GSL 1.15 and GSL 1.16
@@ -56,14 +66,17 @@
     - GSL 1.11 - 1.14 are no longer supported
 
 =head1 v0.38 - September 2016
+
     - Fixes for compiling against various GSL
       versions (thanks CPANtesters!)
 
 =head1 v0.37 - September 2016
+
     - Support for GSL 2.0, 2.1 and 2.2
     - Multilarge subsystem added for GSL >= 2.1
 
 =head1 v0.36 - Fri Mar 25 23:32:03 PDT 2016
+
     - Fixed error messages on Matrix set_col and set_row
       methods (Jon Schutz)
     - Implemented array-based Bessel functions:
@@ -93,20 +106,24 @@
     - Added OO transpose method for matrices (Ivan Baidakou)
 
 =head1 v0.33 - September 2014
+
     - Added OO code for RNG->shuffle, RNG->choose and RNG->sample.
     - Complain when opening (fopen) a file from a tainted string.
     - Complex now has operator overloading for +,-, ==, !=, *, /
     - Added write/load methods to save a matrix to file.
 
 =head1 v0.32 - June 2014
+
     - Correctly split the compiler name.
     - Added OO code to the QRNG module.
     - Fixed QRNG code that was failing on some machines.
 
 =head1 v0.31 - June 2014
+
     - Fixed Matrix multiplication that was forcing square matrices.
 
 =head1 v0.30 - June 2014
+
     - Fixed generated C files with wrong GSL version numbers.
     - Refactored Build.PL in order to use either gsl-config or PkgConfig.
     - Change Build.PL to return 0 when GSL library not found.
@@ -117,6 +134,7 @@
 	- Fixed in the correct way the prove/TAP::Harness problem.
 
 =head1 v0.29 - June 2014
+
 	- Fix issue when prove/TAP::Harness uses lib/ modules instead of blib/ ones.
     - Add functions introduced in gsl 1.16.
     - Fix issue when compiling on some Linuxes.
@@ -127,18 +145,21 @@
     - Math::GSL concat_vertically and concat_horizontally.
 
 =head1 v0.28 - Jan 2014
+
     - Fix build errors with clang
     - Improve POD to play nice with Perl 5.18
     - Teach Math::GSL about new functions added in GSL 1.16
     - Added 1D minimization tests
 
 =head1 v0.27 - July 2012
+
     - Mathieu functions are now accessible
     - Improved detection of gsl
     - Fix bug in calling ->get() method on Math::GSL::Vectors
     - Greatly improved HTML formatting of documentation
 
 =head1 v0.26 - September 2011
+
     - The Math::GSL::Min and Math::GSL::Roots are now functional - Yury Zavarin
     - Dirichlet random distribution support and greatly increased docs by Tom Nishimura <tnish@fastmail.jp>
     - gsl_version() function which returns the version of GSL being used by Tom Nishimura <tnish@fastmail.jp>
@@ -150,16 +171,20 @@
     - Fix build on Windows - Sisyphus
 
 =head1 v0.25 - April 2011
+
     - TODO RT#66882 properly so that a stable release with a passing test suite can be used.
 
 =head1 v0.24 - April 2011
+
     - Fix https://rt.cpan.org/Ticket/Display.html?id=66882 (Tests fail on Perl's with DUSELONGDOUBLE)
 
 =head1 v0.23 - March 2011
+
     - Fixed the tolerance of some tests that were causing CPANtesters failures
     - Fixed some doc typos
 
 =head1 v0.22 - June 2010
+
     - Improved tests
     - == and != operators for Vectors
     - Fixed the export of hypergeometric functions (Thierry Moisan)
@@ -171,6 +196,7 @@
     - Typemap fixes (Vincent Danjean)
 
 =head1 v0.20 - May 19 2009
+
     - $rng->get($n) will now return the next $n values of the random number generator
     - Fixed + added test for RT#45044 math-gsl eigenpair bug, reported with patch by Ian Malone
     - Added more tests for Randist
