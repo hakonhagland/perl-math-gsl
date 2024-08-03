@@ -340,7 +340,8 @@ sub check_alien_gsl_share_dir {
                 my $libs = Math::GSL::Alien->libs;
                 my $lib_dir = $libs =~ m{-L(\S+)} ? $1 : '';
                 if ($lib_dir) {
-                    my $bin_dir = $lib_dir =~ s{/lib}{/bin}r;
+                    # For compatibility with perl < 5.14 we can't use s{/lib}{/bin}r
+                    (my $bin_dir = $lib_dir) =~ s{/lib}{/bin};
                     if (-d $bin_dir) {
                         $ENV{PATH} .= ":$bin_dir";
                     }
