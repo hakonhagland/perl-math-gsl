@@ -113,12 +113,12 @@ jobs:
         run: |
           ./.github/scripts/build_dist.sh
       - name: Save dist as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: math_gsl_dist
           path: ${{ env.MATH_GSL_DISTNAME }}
       - name: Save name of dist as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: math_gsl_dist_name
           path: math-gsl-dist-name.txt
@@ -162,11 +162,11 @@ jobs:
           PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
           GSL_NAME: gsl-${{ matrix.gsl }}
           GSL_DIR: ~/gsl/${{runner.os}}/gsl-${{ matrix.gsl }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist
       - name: Download dist name
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist_name
       - name: extract dist
@@ -210,11 +210,11 @@ jobs:
         env:
           PERL_NAME: perl-5.${{ matrix.perl }}
           PERL_DIR: ~/perl/${{runner.os}}/5.${{ matrix.perl }}
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist
       - name: Download dist name
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: math_gsl_dist_name
       - name: extract dist
@@ -224,8 +224,94 @@ jobs:
           DISTDIR=$(perl -pe 's/\.tar.gz$//' <<<"$DISTNAME")
           echo "DISTDIR=$DISTDIR" >> $GITHUB_ENV
       - name: install perl modules and build and test
-        # NOTE: This should first download and install libgsl using the Alien::GSL module
+        # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
         run: |
           BASEDIR=$PWD
           cd $DISTDIR
           $BASEDIR/.github/scripts/build_and_test.sh
+  install-dist-windows:
+    runs-on: windows-latest
+    needs: [build-dist]
+    strategy:
+      fail-fast: false
+      matrix:
+        perl: ["5.38", "5.36", "5.32"]
+        #gsl: [2.7, 2.6]
+        # NOTE: on windows we will not build against a pre-installed gsl, this will cause
+        #     Build.PL to download the latest gsl version from the internet instead
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up perl
+        uses: shogo82148/actions-setup-perl@v1
+        with:
+          perl-version: ${{ matrix.perl }}
+          distribution: strawberry
+      - name: Download dist
+        uses: actions/download-artifact@v4
+        with:
+          name: math_gsl_dist
+      - name: Download dist name
+        uses: actions/download-artifact@v4
+        with:
+          name: math_gsl_dist_name
+      - name: extract dist
+        shell: pwsh
+        run: |
+          $DISTNAME = Get-Content -Path math-gsl-dist-name.txt
+          tar -zxvf $DISTNAME
+          $DISTDIR = $DISTNAME -replace '\.tar\.gz$', ''
+          echo "DISTDIR=$DISTDIR" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
+
+      - name: Add Strawberry Perl to PATH
+        shell: pwsh
+        run: |
+            $perlPaths = &where.exe perl
+            echo "All Perl paths found:"
+            echo $perlPaths
+            $perlPath = $perlPaths | Select-String -Pattern "C:\\hostedtoolcache\\windows\\strawberry-perl"
+            if ($perlPath) {
+              $perlDir = [System.IO.Path]::GetDirectoryName(($perlPath | Select-Object -First 1).Line)
+              echo "Strawberry Perl found at $perlDir"
+              echo "STRAWBERRY_PERL_PATH=$perlDir" >> $env:GITHUB_ENV
+            } else {
+              echo "Strawberry Perl not found"
+            }
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          update: true
+          install: base-devel mingw-w64-x86_64-toolchain
+      - name: Update MSYS2 and install m4 package
+        # Note: adding m4 to the install list in the setup-msys2 action did not work
+        #  so we have to install it manually
+        run: |
+          C:\msys64\usr\bin\pacman -Syu --noconfirm
+          C:\msys64\usr\bin\pacman -S --noconfirm m4
+        shell: cmd
+      - name: Add MSYS2 to Path
+        run: |
+          echo "C:\msys64\usr\bin" >> $env:GITHUB_PATH
+      - name: install perl modules and build and test
+        shell: pwsh
+        # NOTE: This should first download and install libgsl using the Math::GSL::Alien module
+        run: |
+          #$env:PATH = "$env:STRAWBERRY_PERL_PATH;$env:PATH"
+          $Perl = "$env:STRAWBERRY_PERL_PATH\perl"
+          $Perlcpanm = "$env:STRAWBERRY_PERL_PATH\cpanm"
+          echo "PATH = $env:PATH"
+          & $Perl -V
+          $BASEDIR = $PWD
+          cd $env:DISTDIR
+          $env:PERL_ALIEN_MSYS_BIN = "C:\msys64\usr\bin"
+          & $Perl $Perlcpanm -vn Alien::MSYS
+          $env:PATH = "$env:STRAWBERRY_PERL_PATH;$env:PATH"
+          perl -MAlien::MSYS -E "say Alien::MSYS->msys_path"
+          &cpanm -vn Net::SSLeay
+          &cpanm -n Alien::Build
+          &cpanm -vn Math::GSL::Alien@1.05
+          &cpanm -n Module::Build
+          New-Item -ItemType Directory -Force -Path xs
+          perl Build.PL
+          perl .\Build installdeps --cpan_client cpanm
+          perl .\Build
+          perl .\Build test

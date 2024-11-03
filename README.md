@@ -18,13 +18,8 @@ in your `PATH`, [PkgConfig](http://metacpan.org/release/PkgConfig/) is
 tried to locate GSL.
 
 - If you have not installed GSL on your system,
-[`Alien::GSL`](https://metacpan.org/pod/Alien::GSL) is used to
-install the latest version on your system. `Alien::GSL` depends
-on [`Net::SSLeay`](https://metacpan.org/pod/Net::SSLeay) to download
-the library, which requires that you have
-installed `libssl-dev` and `libz-dev` (on Debian platforms, or similar
-libraries on other platforms).
-
+[`Math::GSL::Alien`](https://metacpan.org/pod/Math::GSL::Alien) is used to
+install the latest version on your system.
 
 # Installation
 
